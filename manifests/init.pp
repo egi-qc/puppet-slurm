@@ -12,11 +12,14 @@ class slurm::install {
     if $::osfamily == "RedHat" {
         $pkgs = {
             "slurm-plugins" => { source => "https://depot.galaxyproject.org/yum/el/7/x86_64/slurm-plugins-17.02.6-1.el7.centos.x86_64.rpm",
-                                 name   => "slurm-plugins", },
+                                 name   => "slurm-plugins",
+                                 ensure => installed },
             "slurm"         => { source => "https://depot.galaxyproject.org/yum/el/7/x86_64/slurm-17.02.6-1.el7.centos.x86_64.rpm",
-                                 name   => "slurm", },
+                                 name   => "slurm",
+                                 ensure => installed },
             "slurm-munge"   => { source => "https://depot.galaxyproject.org/yum/el/7/x86_64/slurm-munge-17.02.6-1.el7.centos.x86_64.rpm",
-                                 name   => "slurm-munge", },
+                                 name   => "slurm-munge", 
+                                 ensure => installed },
 
         }
         create_resources(package, $pkgs)
