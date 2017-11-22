@@ -30,34 +30,56 @@ class slurm::config {
     $control_addr     = $slurm::params::control_addr
     $slurm_ctld_log   = $slurm::params::slurm_ctld_log
     $slurmd_log       = $slurm::params::slurmd_log
+
+    group {
+        "slurm":
+            ensure => present,
+            gid    => 3000
+    }
+
+    user {
+        "slurm":
+            ensure  => present,
+            uid     => 3000,
+            gid     => 3000,
+            shell   => "/bin/false",
+            require => Group["slurm"]
+    }
+
     file {
         "/etc/slurm/slurm.conf":
-            content => template("slurm/slurm.conf.erb")
+            content => template("slurm/slurm.conf.erb"),
+            require => User["slurm"]
     }
 
     file {
         "/var/spool/slurmd":
-            ensure => directory,
-            owner  => slurm,
-            mode   => 0755
+            ensure  => directory,
+            owner   => slurm,
+            mode    => 0755,
+            require => User["slurm"]
     }
 
     file {
         "/var/log/slurmd.log":
-            ensure => present,
-            owner  => slurm,
+            ensure  => present,
+            owner   => slurm,
+            require => User["slurm"]
     }
 
     file {
         "/var/spool/slurmctld":
             ensure => directory,
             owner  => slurm,
-            mode   => 0755
+            mode   => 0755,
+            require => User["slurm"]
+
     }
 
     file {
         "/var/log/slurmctld.log":
             ensure => present,
             owner  => slurm,
+            require => User["slurm"]
     }
 }
