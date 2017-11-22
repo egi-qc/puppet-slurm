@@ -11,14 +11,14 @@ class slurm inherits slurm::params {
 class slurm::install {
     if $::osfamily == "RedHat" {
         package {
-            "munge-libs":
+            ["munge", "munge-libs"]:
                 ensure => installed
         }
 
         exec {
             "Install slurm RPMs":
                 command => "/usr/bin/rpm -ivh https://depot.galaxyproject.org/yum/el/7/x86_64/slurm-plugins-17.02.6-1.el7.centos.x86_64.rpm https://depot.galaxyproject.org/yum/el/7/x86_64/slurm-17.02.6-1.el7.centos.x86_64.rpm https://depot.galaxyproject.org/yum/el/7/x86_64/slurm-munge-17.02.6-1.el7.centos.x86_64.rpm",
-                require => Package["munge-libs"]
+                require => Package["munge", "munge-libs"]
         }
     }
 }
